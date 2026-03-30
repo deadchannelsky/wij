@@ -17,12 +17,27 @@ NC='\033[0m' # No Color
 # Configuration
 DOMAIN="${1:-wheresjason.net}"
 EMAIL="${2:-admin@wheresjason.net}"
-APP_DIR="/opt/wheresjason"
+
+# Auto-detect APP_DIR from current location (script directory)
+# This allows running from any folder location
+APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Validate we're in the right directory (has package.json, client, server folders)
+if [ ! -f "${APP_DIR}/package.json" ] || [ ! -d "${APP_DIR}/client" ] || [ ! -d "${APP_DIR}/server" ]; then
+    echo -e "${RED}ERROR: This script must be run from the WhereisJason project root directory${NC}"
+    echo "Current directory: ${APP_DIR}"
+    echo "Required files/folders not found: package.json, client/, server/"
+    exit 1
+fi
+
 NGINX_CONF="/etc/nginx/sites-available/wheresjason"
 NGINX_ENABLED="/etc/nginx/sites-enabled/wheresjason"
 CERT_PATH="/etc/letsencrypt/live/${DOMAIN}"
 SERVICE_FILE="/etc/systemd/system/wheresjason.service"
 LOG_FILE="${APP_DIR}/deploy.log"
+
+# Create log directory if it doesn't exist
+mkdir -p "$(dirname "${LOG_FILE}")" 2>/dev/null || true
 
 # Functions
 log() {
@@ -49,7 +64,9 @@ section() {
 
 check_root() {
     if [[ $EUID -ne 0 ]]; then
-        error "This script must be run as root (use: sudo deploy.sh)"
+        error "This script must be run as root"
+        echo "Usage: sudo ./deploy.sh [domain] [email]"
+        echo "Example: sudo ./deploy.sh wheresjason.net admin@example.com"
         exit 1
     fi
 }
@@ -190,7 +207,7 @@ server {
 
     # Root location - serve React build
     location / {
-        root /opt/wheresjason/client/build;
+        root APP_DIR_PATH/client/build;
         try_files $uri $uri/ /index.html;
 
         # Cache busting for static files
@@ -220,8 +237,10 @@ server {
 }
 EOF
 
-        # Replace domain name in the config
+        # Replace domain name and app directory in the config
         sed -i "s/DOMAIN_NAME/$DOMAIN/g" "$NGINX_CONF"
+        # Use # as delimiter to handle paths with slashes
+        sed -i "s#APP_DIR_PATH#$APP_DIR#g" "$NGINX_CONF"
         success "Nginx configuration created"
     fi
 
@@ -359,7 +378,8 @@ print_summary() {
     echo -e "${GREEN}Configuration:${NC}" | tee -a "$LOG_FILE"
     echo "  Domain: $DOMAIN" | tee -a "$LOG_FILE"
     echo "  App Directory: $APP_DIR" | tee -a "$LOG_FILE"
-    echo "  Certificate: ${CERT_PATH}" | tee -a "$LOG_FILE"
+    echo "  Certificate Path: ${CERT_PATH}" | tee -a "$LOG_FILE"
+    echo "  Config File: $LOG_FILE" | tee -a "$LOG_FILE"
 
     echo -e "\n${GREEN}Services:${NC}" | tee -a "$LOG_FILE"
     if systemctl is-active --quiet wheresjason.service; then
@@ -387,7 +407,10 @@ main() {
     check_root
 
     section "WhereisJason Deployment Script"
-    log "Starting deployment for domain: $DOMAIN"
+    log "Starting deployment..."
+    log "Detected app directory: $APP_DIR"
+    log "Domain: $DOMAIN"
+    log "Email: $EMAIL"
 
     check_node
     check_nginx
