@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import client from '../api/client';
+import ChatAssistant from '../components/ChatAssistant';
 
 interface LocationStatus {
   current: string;
@@ -25,6 +26,7 @@ export default function Dashboard() {
   const [syncStatus, setSyncStatus] = useState<SyncStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showChat, setShowChat] = useState(false);
 
   /**
    * Fetch location status from API
@@ -154,6 +156,43 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard">
+      {/* Chat Widget */}
+      {showChat && (
+        <div className="chat-widget-overlay">
+          <div className="chat-widget-container">
+            <div className="chat-widget-header">
+              <h3>Jason's Assistant</h3>
+              <button
+                onClick={() => setShowChat(false)}
+                className="chat-close-btn"
+              >
+                ✕
+              </button>
+            </div>
+            <ChatAssistant />
+          </div>
+        </div>
+      )}
+
+      {!showChat && (
+        <button
+          onClick={() => setShowChat(true)}
+          className="btn btn-chat floating"
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            zIndex: 999,
+            borderRadius: '50%',
+            width: '60px',
+            height: '60px',
+            fontSize: '24px',
+          }}
+        >
+          💬
+        </button>
+      )}
+
       <div className="container" style={{ marginTop: '2rem' }}>
         {error && (
           <div className="error-message">

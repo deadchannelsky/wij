@@ -7,6 +7,7 @@ import { startCalendarSyncScheduler, stopCalendarSyncScheduler } from './schedul
 import locationRouter from './routes/location';
 import calendarRouter from './routes/calendar';
 import configRouter from './routes/config';
+import chatRouter from './routes/chat';
 
 // Load environment variables
 dotenv.config();
@@ -73,6 +74,7 @@ app.get('/api/health', (req: Request, res: Response) => {
 app.use('/api/location', locationRouter);
 app.use('/api/calendar', calendarRouter);
 app.use('/api/config', configRouter);
+app.use('/api/chat', chatRouter);
 
 // Serve React app for all other routes (SPA routing)
 app.get('*', (req: Request, res: Response) => {
