@@ -7,7 +7,7 @@ Complete instructions for deploying WhereisJason to your Raspberry Pi 4 running 
 Before starting, ensure you have:
 - Raspberry Pi 4 with Ubuntu 25 installed
 - SSH access to the Raspberry Pi
-- A domain name (e.g., wheresjason.net) pointing to your Raspberry Pi's IP
+- A domain name (e.g., whereisjason.net) pointing to your Raspberry Pi's IP
 - Google Calendar API credentials
 - Git repository access
 
@@ -31,11 +31,11 @@ npm --version
 ## Step 2: Clone the Repository
 
 ```bash
-# Clone the repository to /opt/wheresjason
-sudo git clone <your-git-repo-url> /opt/wheresjason
+# Clone the repository to /opt/whereisjason
+sudo git clone <your-git-repo-url> /opt/whereisjason
 
 # Change into the directory
-cd /opt/wheresjason
+cd /opt/whereisjason
 
 # Verify files are present
 ls -la
@@ -66,7 +66,7 @@ Press `Ctrl+X`, then `Y`, then `Enter` to save.
 ## Step 4: Build the Application
 
 ```bash
-cd /opt/wheresjason
+cd /opt/whereisjason
 
 # Install dependencies
 npm install
@@ -89,12 +89,12 @@ The deployment script sets up Nginx, SSL certificates, and systemd services:
 sudo chmod +x deploy.sh
 
 # Run the script with your domain and email
-sudo ./deploy.sh wheresjason.net admin@wheresjason.net
+sudo ./deploy.sh whereisjason.net admin@whereisjason.net
 ```
 
 Replace:
-- `wheresjason.net` with your actual domain
-- `admin@wheresjason.net` with a valid email for Let's Encrypt notifications
+- `whereisjason.net` with your actual domain
+- `admin@whereisjason.net` with a valid email for Let's Encrypt notifications
 
 The script will:
 - Check/install Nginx and Certbot
@@ -121,13 +121,13 @@ The script will:
 
 ```bash
 # Start the WhereisJason application
-sudo systemctl start wheresjason
+sudo systemctl start whereisjason
 
 # Start Nginx (if not already running)
 sudo systemctl start nginx
 
 # Check status
-sudo systemctl status wheresjason
+sudo systemctl status whereisjason
 sudo systemctl status nginx
 ```
 
@@ -135,12 +135,12 @@ sudo systemctl status nginx
 
 ```bash
 # Test HTTPS access
-curl https://wheresjason.net/
+curl https://whereisjason.net/
 
 # You should see HTML content from your React app
 ```
 
-Open a browser and navigate to `https://wheresjason.net/`. You should see the WhereisJason dashboard.
+Open a browser and navigate to `https://whereisjason.net/`. You should see the WhereisJason dashboard.
 
 ## Automatic Startup on Reboot
 
@@ -148,7 +148,7 @@ Both services are configured to start automatically on boot:
 
 ```bash
 # Verify auto-start is enabled
-sudo systemctl is-enabled wheresjason.service  # Should show "enabled"
+sudo systemctl is-enabled whereisjason.service  # Should show "enabled"
 sudo systemctl is-enabled nginx                # Should show "enabled"
 ```
 
@@ -157,7 +157,7 @@ After rebooting the Raspberry Pi, the services will start automatically:
 sudo reboot
 
 # After reboot, verify services are running
-sudo systemctl status wheresjason
+sudo systemctl status whereisjason
 sudo systemctl status nginx
 ```
 
@@ -167,16 +167,16 @@ After initial deployment, verify everything is working:
 
 ```bash
 # 1. Check application logs
-sudo journalctl -u wheresjason.service -n 20
+sudo journalctl -u whereisjason.service -n 20
 
 # 2. Check Nginx is running
 sudo systemctl status nginx
 
 # 3. Check SSL certificate
-sudo openssl x509 -in /etc/letsencrypt/live/wheresjason.net/fullchain.pem -noout -text
+sudo openssl x509 -in /etc/letsencrypt/live/whereisjason.net/fullchain.pem -noout -text
 
 # 4. Test the API
-curl https://wheresjason.net/api/config
+curl https://whereisjason.net/api/config
 
 # 5. Check certificate renewal timer
 sudo systemctl status certbot.timer
@@ -187,7 +187,7 @@ sudo systemctl status certbot.timer
 When you push code changes from Windows, deploy them to the Raspberry Pi:
 
 ```bash
-cd /opt/wheresjason
+cd /opt/whereisjason
 
 # Pull latest code
 git pull origin main
@@ -199,7 +199,7 @@ npm install
 npm run build
 
 # Restart the service
-sudo systemctl restart wheresjason
+sudo systemctl restart whereisjason
 ```
 
 The site should be updated within seconds. No need to restart Nginx unless you've changed the configuration.
@@ -214,7 +214,7 @@ You can run the deployment script multiple times. On subsequent runs, it will va
 - Services are currently running
 
 ```bash
-sudo ./deploy.sh wheresjason.net admin@wheresjason.net
+sudo ./deploy.sh whereisjason.net admin@whereisjason.net
 ```
 
 ## Troubleshooting
@@ -223,51 +223,51 @@ sudo ./deploy.sh wheresjason.net admin@wheresjason.net
 
 1. **Check services are running:**
    ```bash
-   sudo systemctl status wheresjason
+   sudo systemctl status whereisjason
    sudo systemctl status nginx
    ```
 
 2. **Check logs:**
    ```bash
    # Application logs
-   sudo journalctl -u wheresjason.service -n 50
+   sudo journalctl -u whereisjason.service -n 50
 
    # Nginx logs
-   sudo tail -50 /var/log/nginx/wheresjason_error.log
+   sudo tail -50 /var/log/nginx/whereisjason_error.log
    ```
 
 3. **Check SSL certificate:**
    ```bash
-   sudo openssl x509 -in /etc/letsencrypt/live/wheresjason.net/fullchain.pem -noout -enddate
+   sudo openssl x509 -in /etc/letsencrypt/live/whereisjason.net/fullchain.pem -noout -enddate
    ```
 
 ### Service won't start
 
 1. **Check for errors:**
    ```bash
-   sudo journalctl -u wheresjason.service -n 50
+   sudo journalctl -u whereisjason.service -n 50
    ```
 
 2. **Verify database exists:**
    ```bash
-   ls -la /opt/wheresjason/server/data/app.db
+   ls -la /opt/whereisjason/server/data/app.db
    ```
 
 3. **Verify .env file:**
    ```bash
-   sudo cat /opt/wheresjason/.env
+   sudo cat /opt/whereisjason/.env
    ```
 
 4. **Check permissions:**
    ```bash
-   sudo chown -R root:root /opt/wheresjason
+   sudo chown -R root:root /opt/whereisjason
    ```
 
 ### SSL Certificate Issues
 
 1. **Check certificate expiry:**
    ```bash
-   sudo openssl x509 -in /etc/letsencrypt/live/wheresjason.net/fullchain.pem -noout -enddate
+   sudo openssl x509 -in /etc/letsencrypt/live/whereisjason.net/fullchain.pem -noout -enddate
    ```
 
 2. **Manually renew (if needed):**
@@ -280,7 +280,7 @@ sudo ./deploy.sh wheresjason.net admin@wheresjason.net
 
 1. **Verify domain DNS is pointing to your Raspberry Pi's IP:**
    ```bash
-   nslookup wheresjason.net
+   nslookup whereisjason.net
    ```
 
 2. **Check port forwarding on your router:**
@@ -297,18 +297,18 @@ sudo ./deploy.sh wheresjason.net admin@wheresjason.net
 
 ```bash
 # Start/stop/restart services
-sudo systemctl start wheresjason
-sudo systemctl stop wheresjason
-sudo systemctl restart wheresjason
+sudo systemctl start whereisjason
+sudo systemctl stop whereisjason
+sudo systemctl restart whereisjason
 
 # View service status
-sudo systemctl status wheresjason
+sudo systemctl status whereisjason
 
 # View recent logs
-sudo journalctl -u wheresjason.service -n 100
+sudo journalctl -u whereisjason.service -n 100
 
 # Follow logs in real-time
-sudo journalctl -u wheresjason.service -f
+sudo journalctl -u whereisjason.service -f
 
 # Nginx commands
 sudo systemctl start nginx
@@ -325,20 +325,20 @@ sudo nginx -t
 ### Backup your database
 
 ```bash
-sudo cp /opt/wheresjason/server/data/app.db /opt/wheresjason/server/data/app.db.backup
+sudo cp /opt/whereisjason/server/data/app.db /opt/whereisjason/server/data/app.db.backup
 ```
 
 ### Backup your .env file
 
 ```bash
-sudo cp /opt/wheresjason/.env /opt/wheresjason/.env.backup
+sudo cp /opt/whereisjason/.env /opt/whereisjason/.env.backup
 ```
 
 ### Restore from backup
 
 ```bash
-sudo cp /opt/wheresjason/server/data/app.db.backup /opt/wheresjason/server/data/app.db
-sudo systemctl restart wheresjason
+sudo cp /opt/whereisjason/server/data/app.db.backup /opt/whereisjason/server/data/app.db
+sudo systemctl restart whereisjason
 ```
 
 ## Getting Help

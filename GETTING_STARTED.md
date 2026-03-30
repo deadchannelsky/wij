@@ -198,7 +198,7 @@ git push origin main
 git pull origin main
 npm install
 npm run build
-sudo systemctl restart wheresjason
+sudo systemctl restart whereisjason
 ```
 
 ## 📚 Documentation You'll Need
@@ -281,10 +281,10 @@ A: Yes! Edit `client/src/styles/index.css` - all colors and layout are customiza
 ## 📞 Support Resources
 
 1. **Check the docs first** - Most issues are covered in the guides
-2. **Review logs**: `sudo journalctl -u wheresjason.service -f`
+2. **Review logs**: `sudo journalctl -u whereisjason.service -f`
 3. **Test manually**: `curl http://localhost:5000/api/health`
-4. **Check Nginx**: `sudo nginx -t` and `sudo tail -f /var/log/nginx/wheresjason_error.log`
-5. **Check database**: `sqlite3 /opt/wheresjason/server/data/app.db`
+4. **Check Nginx**: `sudo nginx -t` and `sudo tail -f /var/log/nginx/whereisjason_error.log`
+5. **Check database**: `sqlite3 /opt/whereisjason/server/data/app.db`
 
 ## ✨ What Makes This Special
 

@@ -200,20 +200,20 @@ npm --version
 
 1. **Clone the repository on Raspberry Pi:**
    ```bash
-   sudo git clone <your-git-repo-url> /opt/wheresjason
-   cd /opt/wheresjason
+   sudo git clone <your-git-repo-url> /opt/whereisjason
+   cd /opt/whereisjason
    ```
 
 2. **Create environment file:**
    ```bash
-   sudo cp .env.example /opt/wheresjason/.env
-   sudo nano /opt/wheresjason/.env
+   sudo cp .env.example /opt/whereisjason/.env
+   sudo nano /opt/whereisjason/.env
    # Edit with your Google Calendar ID and API key
    ```
 
 3. **Build the project:**
    ```bash
-   cd /opt/wheresjason
+   cd /opt/whereisjason
    npm install
    npm run build
    npm run db:migrate
@@ -222,7 +222,7 @@ npm --version
 4. **Run the deployment script:**
    ```bash
    sudo chmod +x deploy.sh
-   sudo ./deploy.sh wheresjason.net admin@wheresjason.net
+   sudo ./deploy.sh whereisjason.net admin@whereisjason.net
    ```
 
    The script will:
@@ -236,13 +236,13 @@ npm --version
 
 5. **Start services:**
    ```bash
-   sudo systemctl start wheresjason
+   sudo systemctl start whereisjason
    sudo systemctl start nginx
    ```
 
 6. **Verify it's working:**
    ```bash
-   curl https://wheresjason.net/
+   curl https://whereisjason.net/
    # Should return the React dashboard HTML
    ```
 
@@ -259,15 +259,15 @@ After making code changes on Windows:
 
 2. **On Raspberry Pi, pull and deploy:**
    ```bash
-   cd /opt/wheresjason
+   cd /opt/whereisjason
    git pull origin main
    npm install              # Install any new dependencies
    npm run build            # Build React and compile TypeScript
-   sudo systemctl restart wheresjason  # Restart the app
+   sudo systemctl restart whereisjason  # Restart the app
    ```
 
 3. **Verify the update:**
-   - Visit https://wheresjason.net/ in your browser
+   - Visit https://whereisjason.net/ in your browser
    - Check that the new version is running
 
 ### Running the Deployment Script Again
@@ -275,7 +275,7 @@ After making code changes on Windows:
 The deployment script is designed to be idempotent. You can run it multiple times:
 
 ```bash
-sudo ./deploy.sh wheresjason.net admin@wheresjason.net
+sudo ./deploy.sh whereisjason.net admin@whereisjason.net
 ```
 
 On subsequent runs, it will:
@@ -309,16 +309,16 @@ Services: WhereisJason ✓ Running, Nginx ✓ Running
 
 ```bash
 # Start/stop/restart the application
-sudo systemctl start wheresjason
-sudo systemctl stop wheresjason
-sudo systemctl restart wheresjason
+sudo systemctl start whereisjason
+sudo systemctl stop whereisjason
+sudo systemctl restart whereisjason
 
 # Check service status
-sudo systemctl status wheresjason
+sudo systemctl status whereisjason
 
 # View application logs
-sudo journalctl -u wheresjason.service -f  # Real-time logs
-sudo journalctl -u wheresjason.service --lines 100  # Last 100 lines
+sudo journalctl -u whereisjason.service -f  # Real-time logs
+sudo journalctl -u whereisjason.service --lines 100  # Last 100 lines
 
 # Start/stop/restart Nginx
 sudo systemctl start nginx
@@ -329,7 +329,7 @@ sudo systemctl restart nginx
 sudo systemctl status nginx
 
 # View Nginx error logs
-sudo tail -f /var/log/nginx/wheresjason_error.log
+sudo tail -f /var/log/nginx/whereisjason_error.log
 
 # Test Nginx configuration
 sudo nginx -t
@@ -341,15 +341,15 @@ Both Nginx and the WhereisJason service are configured to start automatically on
 
 ```bash
 # Check auto-start status
-sudo systemctl is-enabled wheresjason.service  # Should output "enabled"
+sudo systemctl is-enabled whereisjason.service  # Should output "enabled"
 sudo systemctl is-enabled nginx                # Should output "enabled"
 ```
 
 After Raspberry Pi reboot, verify services started:
 ```bash
-sudo systemctl status wheresjason
+sudo systemctl status whereisjason
 sudo systemctl status nginx
-curl https://wheresjason.net/
+curl https://whereisjason.net/
 ```
 
 ### SSL Certificate Management
@@ -358,7 +358,7 @@ Let's Encrypt certificates expire every 90 days. The deployment script sets up a
 
 ```bash
 # Check certificate expiration
-sudo openssl x509 -in /etc/letsencrypt/live/wheresjason.net/fullchain.pem -noout -enddate
+sudo openssl x509 -in /etc/letsencrypt/live/whereisjason.net/fullchain.pem -noout -enddate
 
 # View renewal status
 sudo systemctl status certbot.timer
@@ -375,24 +375,24 @@ sudo systemctl restart nginx
 
 ### Troubleshooting Deployment
 
-**Site not loading (https://wheresjason.net/ returns error):**
+**Site not loading (https://whereisjason.net/ returns error):**
 1. Check Nginx is running: `sudo systemctl status nginx`
-2. Check Express app is running: `sudo systemctl status wheresjason`
-3. Review Nginx error log: `sudo tail -50 /var/log/nginx/wheresjason_error.log`
-4. Review app log: `sudo journalctl -u wheresjason.service --lines 50`
+2. Check Express app is running: `sudo systemctl status whereisjason`
+3. Review Nginx error log: `sudo tail -50 /var/log/nginx/whereisjason_error.log`
+4. Review app log: `sudo journalctl -u whereisjason.service --lines 50`
 
 **SSL certificate issues:**
-1. Check certificate validity: `sudo ./deploy.sh wheresjason.net admin@wheresjason.net`
+1. Check certificate validity: `sudo ./deploy.sh whereisjason.net admin@whereisjason.net`
 2. Force renewal if expired: `sudo certbot renew --force-renewal && sudo systemctl restart nginx`
 
 **Service fails to start:**
-1. Check service logs: `sudo journalctl -u wheresjason.service -n 50`
-2. Verify database exists: `ls -la /opt/wheresjason/server/data/app.db`
-3. Verify .env file has correct permissions: `sudo chmod 644 /opt/wheresjason/.env`
+1. Check service logs: `sudo journalctl -u whereisjason.service -n 50`
+2. Verify database exists: `ls -la /opt/whereisjason/server/data/app.db`
+3. Verify .env file has correct permissions: `sudo chmod 644 /opt/whereisjason/.env`
 
 **Nginx configuration errors:**
 1. Test syntax: `sudo nginx -t`
-2. Check logs: `sudo tail -50 /var/log/nginx/wheresjason_error.log`
+2. Check logs: `sudo tail -50 /var/log/nginx/whereisjason_error.log`
 
 ## Useful Files to Understand First
 

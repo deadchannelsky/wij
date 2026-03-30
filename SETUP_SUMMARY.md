@@ -142,15 +142,15 @@ git push -u origin main
 Follow the step-by-step instructions in **DEPLOYMENT.md**:
 ```bash
 # On Raspberry Pi
-git clone <your-repo-url> /opt/wheresjason
-cd /opt/wheresjason
+git clone <your-repo-url> /opt/whereisjason
+cd /opt/whereisjason
 sudo cp .env.example .env
 sudo nano .env  # Add your Google Calendar credentials
 npm install
 npm run build
 npm run db:migrate
 sudo chmod +x deploy.sh
-sudo ./deploy.sh wheresjason.net admin@wheresjason.net
+sudo ./deploy.sh whereisjason.net admin@whereisjason.net
 ```
 
 ### 5. Implement Core Features
@@ -187,7 +187,7 @@ git push
 git pull origin main
 npm install
 npm run build
-sudo systemctl restart wheresjason
+sudo systemctl restart whereisjason
 ```
 
 ## Key Files to Understand First

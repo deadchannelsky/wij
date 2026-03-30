@@ -414,36 +414,36 @@ Follow the complete deployment guide in **DEPLOYMENT.md**:
 
 ```bash
 # On Raspberry Pi
-sudo ./deploy.sh wheresjason.net admin@wheresjason.net
+sudo ./deploy.sh whereisjason.net admin@whereisjason.net
 
 # Then:
 npm run build
-sudo systemctl restart wheresjason
+sudo systemctl restart whereisjason
 ```
 
-The site will be available at: https://wheresjason.net/
+The site will be available at: https://whereisjason.net/
 
 ## Monitoring
 
 ### Check Application Logs
 ```bash
-sudo journalctl -u wheresjason.service -f
+sudo journalctl -u whereisjason.service -f
 ```
 
 ### Check Nginx Logs
 ```bash
-sudo tail -f /var/log/nginx/wheresjason_error.log
+sudo tail -f /var/log/nginx/whereisjason_error.log
 ```
 
 ### Check Database
 ```bash
-sqlite3 /opt/wheresjason/server/data/app.db
+sqlite3 /opt/whereisjason/server/data/app.db
 > SELECT * FROM calendar_events;
 ```
 
 ### Manual Sync
 ```bash
-curl -X POST https://wheresjason.net/api/calendar/sync
+curl -X POST https://whereisjason.net/api/calendar/sync
 ```
 
 ## Troubleshooting
@@ -467,7 +467,7 @@ curl -X POST https://wheresjason.net/api/calendar/sync
 4. Check logs for parsing errors
 
 ### "Dashboard won't load"
-1. Check backend is running: `systemctl status wheresjason`
+1. Check backend is running: `systemctl status whereisjason`
 2. Check frontend built correctly: `npm run build`
 3. Check Nginx config: `sudo nginx -t`
 4. Check Nginx is running: `systemctl status nginx`

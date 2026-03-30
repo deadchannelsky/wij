@@ -1,5 +1,5 @@
 {
-  "name": "wheresjason",
+  "name": "whereisjason",
   "version": "0.1.0",
   "description": "Location dashboard powered by Google Calendar",
   "main": "server/dist/index.js",

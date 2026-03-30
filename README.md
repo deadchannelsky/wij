@@ -119,8 +119,8 @@ For Raspberry Pi 4 with Ubuntu 25:
 
 ```bash
 # On Raspberry Pi
-git clone <repo> /opt/wheresjason
-cd /opt/wheresjason
+git clone <repo> /opt/whereisjason
+cd /opt/whereisjason
 cp .env.example .env
 nano .env  # Add your credentials
 
@@ -129,7 +129,7 @@ npm run build
 npm run db:migrate
 
 sudo chmod +x deploy.sh
-sudo ./deploy.sh wheresjason.net admin@example.com
+sudo ./deploy.sh whereisjason.net admin@example.com
 ```
 
 The deployment script will:
@@ -202,7 +202,7 @@ All testing is manual:
 2. **Production testing:**
    ```bash
    git push
-   # On Raspberry Pi: git pull, npm run build, systemctl restart wheresjason
+   # On Raspberry Pi: git pull, npm run build, systemctl restart whereisjason
    # Visit https://yourdomain.net and verify
    ```
 
@@ -224,11 +224,11 @@ For changes:
 1. Test locally: `npm run dev`
 2. Build: `npm run build`
 3. Commit and push: `git commit && git push`
-4. Deploy on Raspberry Pi: `git pull && npm install && npm run build && systemctl restart wheresjason`
+4. Deploy on Raspberry Pi: `git pull && npm install && npm run build && systemctl restart whereisjason`
 
 ## 📞 Support
 
 - Check [BUILD_COMPLETE.md](./BUILD_COMPLETE.md) for troubleshooting
-- Review logs: `sudo journalctl -u wheresjason.service -f`
+- Review logs: `sudo journalctl -u whereisjason.service -f`
 - Check Google Calendar settings if events don't appear
 - Verify API key is valid and calendar is publicly shared

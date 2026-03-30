@@ -53,7 +53,7 @@ export async function fetchGoogleCalendarEvents(): Promise<CalendarEvent[]> {
       location: event.location || '',
       startTime: event.start.dateTime || event.start.date || '',
       endTime: event.end.dateTime || event.end.date || '',
-    })).filter(event => event.startTime && event.endTime);
+    })).filter((event: CalendarEvent) => event.startTime && event.endTime);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 403) {

@@ -15,8 +15,8 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-DOMAIN="${1:-wheresjason.net}"
-EMAIL="${2:-admin@wheresjason.net}"
+DOMAIN="${1:-whereisjason.net}"
+EMAIL="${2:-admin@whereisjason.net}"
 
 # Auto-detect APP_DIR from current location (script directory)
 # This allows running from any folder location
@@ -30,10 +30,10 @@ if [ ! -f "${APP_DIR}/package.json" ] || [ ! -d "${APP_DIR}/client" ] || [ ! -d 
     exit 1
 fi
 
-NGINX_CONF="/etc/nginx/sites-available/wheresjason"
-NGINX_ENABLED="/etc/nginx/sites-enabled/wheresjason"
+NGINX_CONF="/etc/nginx/sites-available/whereisjason"
+NGINX_ENABLED="/etc/nginx/sites-enabled/whereisjason"
 CERT_PATH="/etc/letsencrypt/live/${DOMAIN}"
-SERVICE_FILE="/etc/systemd/system/wheresjason.service"
+SERVICE_FILE="/etc/systemd/system/whereisjason.service"
 LOG_FILE="${APP_DIR}/deploy.log"
 
 # Create log directory if it doesn't exist
@@ -66,7 +66,7 @@ check_root() {
     if [[ $EUID -ne 0 ]]; then
         error "This script must be run as root"
         echo "Usage: sudo ./deploy.sh [domain] [email]"
-        echo "Example: sudo ./deploy.sh wheresjason.net admin@example.com"
+        echo "Example: sudo ./deploy.sh whereisjason.net admin@example.com"
         exit 1
     fi
 }
@@ -161,7 +161,7 @@ setup_nginx_config() {
         log "Creating Nginx configuration..."
 
         cat > "$NGINX_CONF" << 'EOF'
-upstream wheresjason_backend {
+upstream whereisjason_backend {
     server 127.0.0.1:5000;
 }
 
@@ -198,8 +198,8 @@ server {
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 
     # Logging
-    access_log /var/log/nginx/wheresjason_access.log;
-    error_log /var/log/nginx/wheresjason_error.log;
+    access_log /var/log/nginx/whereisjason_access.log;
+    error_log /var/log/nginx/whereisjason_error.log;
 
     # Gzip compression
     gzip on;
@@ -219,7 +219,7 @@ server {
 
     # API endpoints - proxy to Express backend
     location /api/ {
-        proxy_pass http://wheresjason_backend;
+        proxy_pass http://whereisjason_backend;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -308,7 +308,7 @@ EOF
     # Enable service to start on boot
     log "Enabling service to start on boot..."
     systemctl daemon-reload
-    systemctl enable wheresjason.service
+    systemctl enable whereisjason.service
     success "Service enabled for auto-start on boot"
 }
 
@@ -342,12 +342,12 @@ check_app_files() {
 check_service_status() {
     section "Checking Service Status"
 
-    if systemctl is-active --quiet wheresjason.service; then
+    if systemctl is-active --quiet whereisjason.service; then
         success "WhereisJason service is running"
-        systemctl status wheresjason.service --no-pager
+        systemctl status whereisjason.service --no-pager
     else
         warning "WhereisJason service is not running"
-        log "To start the service, run: systemctl start wheresjason.service"
+        log "To start the service, run: systemctl start whereisjason.service"
     fi
 
     if systemctl is-active --quiet nginx; then
@@ -382,7 +382,7 @@ print_summary() {
     echo "  Config File: $LOG_FILE" | tee -a "$LOG_FILE"
 
     echo -e "\n${GREEN}Services:${NC}" | tee -a "$LOG_FILE"
-    if systemctl is-active --quiet wheresjason.service; then
+    if systemctl is-active --quiet whereisjason.service; then
         echo -e "  WhereisJason: ${GREEN}Running${NC}" | tee -a "$LOG_FILE"
     else
         echo -e "  WhereisJason: ${YELLOW}Stopped${NC}" | tee -a "$LOG_FILE"
@@ -396,9 +396,9 @@ print_summary() {
 
     echo -e "\n${GREEN}Next Steps:${NC}" | tee -a "$LOG_FILE"
     echo "  1. Verify HTTPS is working: curl https://$DOMAIN/" | tee -a "$LOG_FILE"
-    echo "  2. Check logs: tail -f /var/log/nginx/wheresjason_access.log" | tee -a "$LOG_FILE"
-    echo "  3. View app logs: journalctl -u wheresjason.service -f" | tee -a "$LOG_FILE"
-    echo "  4. Restart services: systemctl restart wheresjason nginx" | tee -a "$LOG_FILE"
+    echo "  2. Check logs: tail -f /var/log/nginx/whereisjason_access.log" | tee -a "$LOG_FILE"
+    echo "  3. View app logs: journalctl -u whereisjason.service -f" | tee -a "$LOG_FILE"
+    echo "  4. Restart services: systemctl restart whereisjason nginx" | tee -a "$LOG_FILE"
 
     echo -e "\n${GREEN}Log file saved to: $LOG_FILE${NC}" | tee -a "$LOG_FILE"
 }

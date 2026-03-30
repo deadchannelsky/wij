@@ -181,8 +181,8 @@ PRODUCTION READY
 5. DEPLOY TO RASPBERRY PI
    ├─ Push to Git repository
    ├─ See DEPLOYMENT.md for complete guide
-   ├─ Run: sudo ./deploy.sh wheresjason.net admin@email.com
-   ├─ Visit: https://wheresjason.net/
+   ├─ Run: sudo ./deploy.sh whereisjason.net admin@email.com
+   ├─ Visit: https://whereisjason.net/
    └─ Done! ✅
 
 ================================================================================
@@ -327,10 +327,10 @@ TARGET PLATFORM:
 DEPLOYMENT PROCESS:
   1. Push code to Git
   2. SSH into Raspberry Pi
-  3. Clone repository to /opt/wheresjason
+  3. Clone repository to /opt/whereisjason
   4. Configure .env with credentials
   5. Run: npm install && npm run build && npm run db:migrate
-  6. Run: sudo ./deploy.sh wheresjason.net admin@email.com
+  6. Run: sudo ./deploy.sh whereisjason.net admin@email.com
   7. Verify at: https://yourdomain.net
 
 AUTOMATED BY DEPLOY.SH:
@@ -345,11 +345,11 @@ AUTOMATED BY DEPLOY.SH:
   ✅ Reports comprehensive status
 
 SERVICE MANAGEMENT:
-  sudo systemctl start wheresjason      # Start service
-  sudo systemctl stop wheresjason       # Stop service
-  sudo systemctl restart wheresjason    # Restart service
-  sudo systemctl status wheresjason     # Check status
-  journalctl -u wheresjason -f          # View logs
+  sudo systemctl start whereisjason      # Start service
+  sudo systemctl stop whereisjason       # Stop service
+  sudo systemctl restart whereisjason    # Restart service
+  sudo systemctl status whereisjason     # Check status
+  journalctl -u whereisjason -f          # View logs
 
 ================================================================================
                            SECURITY FEATURES
@@ -403,7 +403,7 @@ NEXT WEEK:
 ONGOING:
   1. Add more events to Google Calendar
   2. Monitor dashboard updates
-  3. Check server logs if needed: sudo journalctl -u wheresjason -f
+  3. Check server logs if needed: sudo journalctl -u whereisjason -f
   4. Verify certificate renewal works
 
 ================================================================================
@@ -419,7 +419,7 @@ Documentation:
   • GETTING_STARTED.md      - This document
 
 Troubleshooting:
-  • Check logs: journalctl -u wheresjason -f
+  • Check logs: journalctl -u whereisjason -f
   • Test API: curl http://localhost:5000/api/health
   • Check Nginx: sudo nginx -t
   • Test database: sqlite3 /path/to/app.db
@@ -433,12 +433,12 @@ Common Issues & Solutions:
   • HTTPS not working?
     → Run deploy.sh again to validate
     → Check certificate: openssl x509 -in /etc/letsencrypt/...
-    → Check Nginx: sudo tail -f /var/log/nginx/wheresjason_error.log
+    → Check Nginx: sudo tail -f /var/log/nginx/whereisjason_error.log
 
   • Service won't start?
-    → Check logs: sudo journalctl -u wheresjason -n 50
+    → Check logs: sudo journalctl -u whereisjason -n 50
     → Verify .env is readable
-    → Check database exists: ls -la /opt/wheresjason/server/data/app.db
+    → Check database exists: ls -la /opt/whereisjason/server/data/app.db
 
 ================================================================================
                              FINAL CHECKLIST
